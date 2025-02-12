@@ -33,7 +33,7 @@ scholar_id = common.loadPaperInfo(paper_id).scholar_id
 ############################################
 # 下载谷歌学术引用页
 
-start_page_number = 2 # 默认为1，设置成其他值用于下载中断时的恢复
+start_page_number = 1 # 默认为1，设置成其他值用于下载中断时的恢复
 page_number = start_page_number 
 url = f"https://scholar.google.com/scholar?cites={scholar_id}"
 if page_number > 1:
