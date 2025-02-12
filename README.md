@@ -17,6 +17,6 @@
    1. ScholarID表示Google Scholar引用页面URL中的数字ID
    2. ApproachName表示论文方法的名字，用于查找引用
 3. 修改config.py，将paper_download_id设置成论文目录的名字
-4. 执行paper_downloader.py，下载论文
+4. 执行paper_downloader.py，下载引文
 5. 修改config.py，将citation_analysis_id设置成论文目录的名字
-6. 执行citation_analysis.py，下载论文
+6. 执行citation_analysis.py，提取引文文本并分析。分析结果保存在all_snippets.txt中。
