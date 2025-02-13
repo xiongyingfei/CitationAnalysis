@@ -176,12 +176,13 @@ def extract_citation_positions(paper_text, authors, year, reference_number = Non
     
     # Match numeric citations
     if reference_number is not None:
-        numeric_pattern = r'\[([0-9\,\-\–\s]+)\]'
+        numeric_pattern = r'\[([0-9\,\[\]\-\–\s]+)\]'
         numeric_matches = re.finditer(numeric_pattern, paper_text)
         for match in numeric_matches:
             elements = match.group(1).split(',')
             found = False
             for elem in elements:
+                elem = elem.strip().replace("[", "").replace("]", "") 
                 if '-' in elem or '–' in elem:
                     parts = re.split(r'[-–]', elem)
                     if len(parts) != 2:
