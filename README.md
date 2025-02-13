@@ -10,6 +10,18 @@
 * 提取引文中的引用片段
 * 提交引用片段给大模型，判断是否是好评
 
+## 运行环境
+Python 3.8以上，安装以下库
+Pip install:
+    requests
+    selenium
+    requests_cache
+    fuzzywuzzy
+    jsonschema
+    Levenshtein
+    pymupdf
+    tools
+
 ## 使用方法
 1. 将config_example.py重命名为config.py，选择合适的大模型配置，修改model变量的赋值，并对应配置中填入自己的API Key。
    * 千问的返回结果有时会不符合格式，DeepSeek效果更好
