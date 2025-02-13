@@ -55,6 +55,36 @@ def test_multiple_approach_names():
     assert "TreeGen" in paper_text[slice(*result[2])]
     assert "GraphGen" in paper_text[slice(*result[3])]
     
+def test_numeric_citations_range_different_format():
+    paper_text = "This work builds on previous results [19]-[21] to elaborate on new findings."
+    authors = ["John Doe", "Jane Smith"]
+    year = 2021
+    reference_number = 20
+    result = extract_citation_positions(paper_text, authors, year, reference_number)
+    assert len(result) == 1
+    assert "[19]-[21]" in paper_text[slice(*result[0])]    
+    
+def test_numeric_citations_range_different_hypen():
+    paper_text = "This work builds on previous results [19]–[21] to elaborate on new findings."
+    authors = ["John Doe", "Jane Smith"]
+    year = 2021
+    reference_number = 20
+    result = extract_citation_positions(paper_text, authors, year, reference_number)
+    assert len(result) == 1
+    assert "[19]–[21]" in paper_text[slice(*result[0])]    
+    
+    
+def test_numeric_citations_range_consecutive():
+    paper_text = "This is a sample text with citations [1, 2, 3]. Another citation [4][5][6]."
+    authors = ["John Doe", "Jane Smith"]
+    year = 2021
+    reference_number = 5
+    result = extract_citation_positions(paper_text, authors, year, reference_number)
+    assert len(result) == 1
+    assert "[5]" in paper_text[slice(*result[0])]
+
+    
+    
 def checkAAAI20(citation_id, expected, reference_number):
     paper_id = "AAAI20"
     authors = ["Zeyu Sun", "Qihao Zhu", "Yingfei Xiong", "Yican Sun", "Lili Mou", "Lu Zhang"]
@@ -95,14 +125,13 @@ def test_OOPSLA20_3():
     checkOOPSLA20(3, ["[14–18, 24, 33, 35]", "[24]"], 24)    
 
 def test_OOPSLA20_23():
-    checkOOPSLA20(23, ["[65]", "[65]", "[65]", "[ 65 ]"], 65)    
+    checkOOPSLA20(23, ["[64]–[66]", "[65]", "[65]", "[65]", "[ 65 ]"], 65)    
     
 def test_OOPSLA20_18():
     checkOOPSLA20(18, ["[3, 4, 14–21]", "[21]"], 21)        
     
 def test_OOPSLA20_6():
     checkOOPSLA20(6, ["[31–35, 45, 55, 60]", "[45]"], 45)    
-
 
 def test_OOPSLA20_5():
     checkOOPSLA20(5, ["Ji et al., 2020"], None)    
