@@ -33,6 +33,13 @@ scholar_id = common.loadPaperInfo(paper_id).scholar_id
 ############################################
 # 下载谷歌学术引用页
 
+def wait_for_page_load(driver, timeout=20):
+    wait = WebDriverWait(driver, timeout)
+    # 检查页面是否生成完整
+    wait.until(EC.presence_of_element_located((By.ID, "gs_res_ccl_top")))
+    wait.until(EC.presence_of_element_located((By.ID, "gs_res_ccl_mid")))
+    wait.until(EC.presence_of_element_located((By.ID, "gs_res_ccl_bot")))
+
 start_page_number = 1 # 默认为1，设置成其他值用于下载中断时的恢复
 page_number = start_page_number 
 url = f"https://scholar.google.com/scholar?cites={scholar_id}"
@@ -52,9 +59,12 @@ if not os.path.exists(file_path_pattern.format(number=page_number)):
     driver = webdriver.Chrome(options=options)
     print(f"Starting download from {url}")
     driver.get(url)
-    time.sleep(5)  # 等待页面加载
+    # time.sleep(5)  # 等待页面加载
     try:
         while True:
+            # 等待页面加载
+            wait_for_page_load(driver)
+            # 加载完成后获取页面内容
             page_content = driver.page_source
 
             # 将内容保存到文件
