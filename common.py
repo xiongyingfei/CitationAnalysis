@@ -42,7 +42,7 @@ def loadPaperInfo(paper_id):
                 f"venue={self.venue}, year={self.year})")
 
         def citation(self):
-            return f"{", ".join(self.authors)}. {self.title}. {self.venue}. {self.year}."
+            return f"{', '.join(self.authors)}. {self.title}. {self.venue}. {self.year}."
 
     return PaperInfo(scholar_id, authors, approachName, title, venue, year)
 
