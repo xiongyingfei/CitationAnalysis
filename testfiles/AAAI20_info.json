@@ -1,0 +1,8 @@
+{
+    "ScholarID" : 17177793676056256878,
+    "ApproachName": ["TreeGen"],
+    "Title" : "Treegen: A tree-based transformer architecture for code generation",
+    "Authors": ["Zeyu Sun", "Qihao Zhu", "Yingfei Xiong", "Yican Sun", "Lili Mou", "Lu Zhang"],
+    "Venue" : "AAAI'20: Thirty-Fourth AAAI Conference on Artificial Intelligence",
+    "Year" : 2020
+}

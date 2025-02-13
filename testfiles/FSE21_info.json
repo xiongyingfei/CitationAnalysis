@@ -1,0 +1,8 @@
+{
+    "ScholarID" : 7834639058282365267,
+    "ApproachName": ["ProbDD", "Probabilistic Delta Debugging"],
+    "Title" : "Probabilistic Delta Debugging",
+    "Authors": ["Guancheng Wang#", "Ruobing Shen#", "Junjie Chen", "Yingfei Xiong*", "Lu Zhang"],
+    "Venue" : "ESEC/FSE'21: ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering",
+    "Year" : 2021
+}

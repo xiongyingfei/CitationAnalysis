@@ -15,8 +15,9 @@ def save_citation_info(paper_id, citation_id, citation_info):
         json.dump(citation_info, f, ensure_ascii=False, indent=4)
 
 
-def loadPaperInfo(paper_id):
-    info_file_path = os.path.join(paper_id, "info.json")
+def loadPaperInfo(paper_id, info_file_path=None):
+    if info_file_path is None:
+        info_file_path = os.path.join(paper_id, "info.json")
 
     with open(info_file_path, 'r', encoding='utf-8') as file:
         info_data = json.load(file)
