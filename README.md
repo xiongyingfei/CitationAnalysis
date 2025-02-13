@@ -12,7 +12,6 @@
 
 ## 运行环境
 Python 3.8以上，安装以下库
-Pip install:
     requests
     selenium
     requests_cache
