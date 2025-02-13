@@ -184,7 +184,7 @@ def get_citation_text(citation_info):
     rest = citation_info["Title"]
     if "SemScholar_authors" in citation_info and "SemScholar_venue" in citation_info and "SemScholar_year" in citation_info:
         authors = ", ".join(author["name"] for author in citation_info["SemScholar_authors"])        
-        rest = f"{authors}. {citation_info["SemScholar_venue"]}. {citation_info["SemScholar_year"]}."
+        rest = f"{authors}. {citation_info['SemScholar_venue']}. {citation_info['SemScholar_year']}."
     return f"{title}. {rest}"
     
 pdf_to_text(paper_id)
