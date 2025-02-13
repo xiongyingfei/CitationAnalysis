@@ -183,7 +183,6 @@ def extract_citation_positions(paper_text, authors, year, reference_number = Non
             elements = match.group(1).replace(" ", "").replace("][", ",").replace("]-[", "-").replace("]–[", "–").split(',')
             found = False
             for elem in elements:
-                print(elem)
                 if '-' in elem or '–' in elem:
                     parts = re.split(r'[-–]', elem)
                     if len(parts) != 2:
