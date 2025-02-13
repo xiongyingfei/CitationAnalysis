@@ -9,6 +9,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 import re
 from bs4 import BeautifulSoup
@@ -33,6 +35,13 @@ scholar_id = common.loadPaperInfo(paper_id).scholar_id
 ############################################
 # 下载谷歌学术引用页
 
+def wait_for_page_load(driver, timeout=20):
+    wait = WebDriverWait(driver, timeout)
+    # 检查scholar页面是否加载完成
+    wait.until(EC.presence_of_element_located((By.ID, "gs_res_ccl_top")))
+    wait.until(EC.presence_of_element_located((By.ID, "gs_res_ccl_mid")))
+    wait.until(EC.presence_of_element_located((By.ID, "gs_res_ccl_bot")))
+
 start_page_number = 1 # 默认为1，设置成其他值用于下载中断时的恢复
 page_number = start_page_number 
 url = f"https://scholar.google.com/scholar?cites={scholar_id}"
@@ -52,9 +61,12 @@ if not os.path.exists(file_path_pattern.format(number=page_number)):
     driver = webdriver.Chrome(options=options)
     print(f"Starting download from {url}")
     driver.get(url)
-    time.sleep(5)  # 等待页面加载
+    # time.sleep(5)  # 等待页面加载
     try:
         while True:
+            # 等待页面加载
+            wait_for_page_load(driver)
+            # 加载完成后读取页面内容
             page_content = driver.page_source
 
             # 将内容保存到文件
