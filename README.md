@@ -25,7 +25,7 @@ Python 3.8以上，安装以下库
 
 ## 使用方法
 1. 将config_example.py重命名为config.py，选择合适的大模型配置，修改model变量的赋值，并对应配置中填入自己的API Key。
-   * 千问的返回结果有时会不符合格式，DeepSeek效果更好
+   * 目前提示词针对千问优化，但千问的返回结果有时会不符合格式报错。
 2. 仿照AAAI20目录，为自己的论文创建目录，并添加info.json文件
    1. ScholarID表示Google Scholar引用页面URL中的数字ID
    2. ApproachName表示论文方法的名字，用于查找引用
