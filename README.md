@@ -20,6 +20,8 @@ Python 3.8以上，安装以下库
     Levenshtein
     pymupdf
     tools
+    beautifulsoup4
+    openai
 
 ## 使用方法
 1. 将config_example.py重命名为config.py，选择合适的大模型配置，修改model变量的赋值，并对应配置中填入自己的API Key。
