@@ -49,7 +49,7 @@ def invoke_model_openai(config, user):
         # max_tokens=8192,
     )
     print("response:\n", response.choices[0].message.content)
-    if response.choices[0].finish_reason != "stop":
+    if response.choices[0].finish_reason != "stop" and response.choices[0].finish_reason != "normal":
         raise Exception(f"OpenAI API response did not finish normally: {response.choices[0].finish_reason}")
     msg = response.choices[0].message.content.strip()
     msg = msg[msg.find("{"):msg.rfind("}")+1]
