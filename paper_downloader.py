@@ -11,6 +11,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 import time
 import re
 from bs4 import BeautifulSoup
@@ -65,7 +66,16 @@ if not os.path.exists(file_path_pattern.format(number=page_number)):
     try:
         while True:
             # 等待页面加载
-            wait_for_page_load(driver)
+            while True:
+                try:
+                    wait_for_page_load(driver)
+                except TimeoutException:
+                    driver = webdriver.Chrome(options=options)
+                    driver.get(url)
+                    print ("Timeout ! retry!")
+                    time.sleep(5)
+                    continue
+                break
             # 加载完成后读取页面内容
             page_content = driver.page_source
 
@@ -216,6 +226,7 @@ def download_semantic_scholar_info(paper_id, citation_id):
         })
         # Return empty list for 404 Not Found
         if response.status_code == 404:
+            raise Exception
             return []
         response.raise_for_status()
         return response.json()['data']
@@ -267,10 +278,19 @@ while True:
     citation_file = f"{paper_id}/Citation_{i}.json"
     if not os.path.exists(citation_file):
         break
-    try:
-        download_semantic_scholar_info(paper_id, i)
-    except Exception as e:
-        print(f"Error processing citation {i}: {e}")
+    times = 0
+    while True:
+        try:
+            download_semantic_scholar_info(paper_id, i)
+        except Exception as e:
+            print(f"Error processing citation {i}: {e}")
+            times += 1
+            time.sleep(1)
+            if times >= 10:
+                print ("Fail!")
+                break
+            continue
+        break
     i += 1
 
 ############################################
@@ -433,12 +453,18 @@ while True:
     ]
 
     print(f"Downloading {file_name}")
-    try:
-        try_downloaders(downloaders, citation, file_name)
-    except Exception as e:
-        msg = f"Failed to download {file_name} : {e}"
-        print(msg)
-        with open(missing_name, 'w', encoding='utf-8') as file:
-            file.write(msg)
-    
+    times = 0
+    while True:
+        try:
+            try_downloaders(downloaders, citation, file_name)
+        except Exception as e:
+            if times >= 5:
+                msg = f"Failed to download {file_name} : {e}"
+                print(msg)
+                with open(missing_name, 'w', encoding='utf-8') as file:
+                    file.write(msg)
+            times += 1
+            time.sleep(1)
+            continue
+        break
     i += 1
