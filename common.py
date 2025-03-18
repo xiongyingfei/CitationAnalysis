@@ -1,5 +1,6 @@
 import json
 import os
+import time
 
 from fuzzywuzzy import fuzz
 import re
@@ -14,7 +15,7 @@ def save_citation_info(paper_id, citation_id, citation_info):
     with open(f"{paper_id}/Citation_{citation_id}.json", "w", encoding="utf-8") as f:
         json.dump(citation_info, f, ensure_ascii=False, indent=4)
 
-
+            
 def loadPaperInfo(paper_id, info_file_path=None):
     if info_file_path is None:
         info_file_path = os.path.join(paper_id, "info.json")
@@ -277,3 +278,25 @@ def validate_output(json_result):
     }
     
     jsonschema.validate(instance=json_result, schema=schema)
+
+
+def retry(operation, max_retries=10, delay=1):
+    """
+    Retry an operation up to max_retries times.
+    
+    Args:
+        operation: A parameterless function to execute.
+        max_retries: Maximum number of retries.
+        delay: Delay between retries in seconds.
+    """
+    times = 0
+    while True:
+        try:
+            return operation()
+        except Exception as e:
+            print(f"Error: {str(e)}, retry {times+1}/{max_retries}")
+            times += 1
+            time.sleep(delay)
+            if times >= max_retries:
+                print("Fail!")
+                break
