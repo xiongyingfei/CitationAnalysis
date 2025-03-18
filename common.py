@@ -8,14 +8,14 @@ import re
 import jsonschema 
 
 def load_citation_info(paper_id, citation_id):
-    def operation():
-        with open(f"{paper_id}/Citation_{citation_id}.json", "r", encoding="utf-8") as f:
-            return json.load(f)
-    return retry(operation)
+    with open(f"{paper_id}/Citation_{citation_id}.json", "r", encoding="utf-8") as f:
+        return json.load(f)
 
 def save_citation_info(paper_id, citation_id, citation_info):
-    def operation():
-        with open(f"{paper_id}/Citation_{citation_id}.json", "w", encoding="utf-8") as f:
+    with open(f"{paper_id}/Citation_{citation_id}.json", "w", encoding="utf-8") as f:
+        json.dump(citation_info, f, ensure_ascii=False, indent=4)
+
+            
 def loadPaperInfo(paper_id, info_file_path=None):
     if info_file_path is None:
         info_file_path = os.path.join(paper_id, "info.json")
