@@ -4,7 +4,7 @@ import os
 import json
 import random
 import common
-from common import load_citation_info, save_citation_info
+from common import load_citation_info, retry, save_citation_info
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -66,16 +66,8 @@ if not os.path.exists(file_path_pattern.format(number=page_number)):
     try:
         while True:
             # 等待页面加载
-            while True:
-                try:
-                    wait_for_page_load(driver)
-                except TimeoutException:
-                    driver = webdriver.Chrome(options=options)
-                    driver.get(url)
-                    print ("Timeout ! retry!")
-                    time.sleep(5)
-                    continue
-                break
+            wait_for_page_load(driver)
+
             # 加载完成后读取页面内容
             page_content = driver.page_source
 
@@ -278,19 +270,8 @@ while True:
     citation_file = f"{paper_id}/Citation_{i}.json"
     if not os.path.exists(citation_file):
         break
-    times = 0
-    while True:
-        try:
-            download_semantic_scholar_info(paper_id, i)
-        except Exception as e:
-            print(f"Error processing citation {i}: {e}")
-            times += 1
-            time.sleep(1)
-            if times >= 10:
-                print ("Fail!")
-                break
-            continue
-        break
+    # Use the retry function with a lambda that encapsulates the required parameters.
+    retry(lambda: download_semantic_scholar_info(paper_id, i))
     i += 1
 
 ############################################
@@ -453,18 +434,11 @@ while True:
     ]
 
     print(f"Downloading {file_name}")
-    times = 0
-    while True:
-        try:
-            try_downloaders(downloaders, citation, file_name)
-        except Exception as e:
-            if times >= 5:
-                msg = f"Failed to download {file_name} : {e}"
-                print(msg)
-                with open(missing_name, 'w', encoding='utf-8') as file:
-                    file.write(msg)
-            times += 1
-            time.sleep(1)
-            continue
-        break
+    try:
+        retry(lambda: try_downloaders(downloaders, citation, file_name), retries=2, delay=5)
+    except Exception as e:
+        msg = f"Failed to download {file_name} : {e}"
+        print(msg)
+        with open(missing_name, 'w', encoding='utf-8') as file:
+            file.write(msg)
     i += 1
