@@ -294,7 +294,7 @@ def retry(operation, max_retries=10, delay=1):
         try:
             return operation()
         except Exception as e:
-            print(f"Error: {e}, retry {times+1}/{max_retries}")
+            print(f"Error: {str(e)}, retry {times+1}/{max_retries}")
             times += 1
             time.sleep(delay)
             if times >= max_retries:

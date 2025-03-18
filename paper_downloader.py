@@ -218,7 +218,6 @@ def download_semantic_scholar_info(paper_id, citation_id):
         })
         # Return empty list for 404 Not Found
         if response.status_code == 404:
-            raise Exception
             return []
         response.raise_for_status()
         return response.json()['data']
