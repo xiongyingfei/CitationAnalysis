@@ -434,7 +434,7 @@ while True:
 
     print(f"Downloading {file_name}")
     try:
-        retry(lambda: try_downloaders(downloaders, citation, file_name), retries=2, delay=5)
+        retry(lambda: try_downloaders(downloaders, citation, file_name), max_retries=2, delay=5)
     except Exception as e:
         msg = f"Failed to download {file_name} : {e}"
         print(msg)
