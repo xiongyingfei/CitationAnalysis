@@ -3,3 +3,4 @@ config.py
 */*
 !AAAI20/info.json
 !testfiles/*
+temp_*.*

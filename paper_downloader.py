@@ -57,6 +57,8 @@ if not os.path.exists(file_path_pattern.format(number=page_number)):
     options.add_argument('--headless')  # 无头模式
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
+    options.add_argument('--disable-blink-features=AutomationControlled')  # 隐藏自动化特征
+    options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
 
     # 启动浏览器
     driver = webdriver.Chrome(options=options)
