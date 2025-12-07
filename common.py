@@ -290,13 +290,15 @@ def retry(operation, max_retries=10, delay=1):
         delay: Delay between retries in seconds.
     """
     times = 0
+    exceptions = []
     while True:
         try:
             return operation()
         except Exception as e:
+            exceptions.append(e)
             print(f"Error: {str(e)}, retry {times+1}/{max_retries}")
             times += 1
             time.sleep(delay)
             if times >= max_retries:
                 print("Fail!")
-                break
+                raise Exception(f"All retries failed: {'; '.join(str(e) for e in exceptions)}")
